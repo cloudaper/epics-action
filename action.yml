@@ -1,0 +1,13 @@
+name: Epic issues for GitHub
+description: Automatically update task list when referenced issue is closed
+inputs:
+  github-token:
+    description: GitHub token secret
+    required: true
+  epic-label-name:
+    description: Label name for epic issues
+    required: true
+    default: epic
+runs:
+  using: node12
+  main: dist/index.js
