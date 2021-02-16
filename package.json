@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "yarn lint && ncc build index.js",
-    "lint": "eslint index.js --fix"
+    "lint": "eslint index.js",
+    "lint:fix": "eslint index.js --fix"
   },
   "repository": {
     "type": "git",
