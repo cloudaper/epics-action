@@ -11,7 +11,7 @@ inputs:
   auto-close-epic:
     description: Auto close epic when all referenced issues are closed
     required: false
-    default: true
+    default: false
 runs:
   using: node12
   main: dist/index.js
