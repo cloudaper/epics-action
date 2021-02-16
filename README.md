@@ -20,6 +20,9 @@ The action automatically updates the task list when referenced issue is closed (
 - **`epic-label-name`**  
   name of the label you want to use for epic issues  
   _default: `epic`_
+- **`auto-close-epic`**  
+  auto close epic when all referenced issues are closed  
+  _default: `false`_
 
 ## Example usage
 
@@ -38,6 +41,7 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           epic-label-name: feature
+          auto-close-epic: true
 ```
 
 ## Development
