@@ -8,6 +8,10 @@ inputs:
     description: Label name for epic issues
     required: true
     default: epic
+  auto-close-epic:
+    description: Auto close epic when all referenced issues are closed
+    required: false
+    default: false
 runs:
   using: node12
   main: dist/index.js

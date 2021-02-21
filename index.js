@@ -19,18 +19,36 @@ async function getReferencedEpics({ octokit }) {
 }
 
 async function updateEpic({ octokit, epic }) {
+  const autoCloseEpic = core.getInput('auto-close-epic', { required: false });
+
   const issueNumber = github.context.payload.issue.number;
   const issueState = github.context.payload.issue.state;
   const convertedIssueState = issueState === 'closed' ? 'x' : ' ';
   const epicNumber = epic.source.issue.number;
+  let epicState = epic.source.issue.state;
   let epicBody = epic.source.issue.body;
 
   const pattern = new RegExp(`- \\[[ |x]\\] .*#${issueNumber}.*`, 'gm');
-  const matches = epicBody.matchAll(pattern);
+  const matches = Array.from(epicBody.matchAll(pattern));
+  const matchCount = matches.length;
 
-  // eslint-disable-next-line no-restricted-syntax
-  for (const match of matches) {
+  matches.forEach((match) => {
     epicBody = epicBody.replace(match[0], match[0].replace(/- \[[ |x]\]/, `- [${convertedIssueState}]`));
+  });
+
+  const patternAll = new RegExp('- \\[[ |x]\\] .*#.*', 'gm');
+  const patternAllDone = new RegExp('- \\[[x]\\] .*#.*', 'gm');
+  const matchesAll = Array.from(epicBody.matchAll(patternAll));
+  const matchesAllCount = matchesAll.length;
+  const matchesAllDone = Array.from(epicBody.matchAll(patternAllDone));
+  const matchesAllDoneCount = matchesAllDone.length;
+
+  if (!!autoCloseEpic
+    && matchCount
+    && matchesAllCount
+    && matchesAllDoneCount === matchesAllCount
+  ) {
+    epicState = 'closed';
   }
 
   const result = await octokit.issues.update({
@@ -38,6 +56,7 @@ async function updateEpic({ octokit, epic }) {
     repo: github.context.repo.repo,
     issue_number: epicNumber,
     body: epicBody,
+    state: epicState,
   });
 
   return result;
