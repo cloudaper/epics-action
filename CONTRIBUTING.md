@@ -1,6 +1,6 @@
 # Contributing
 
-Feel free to open a PR. GitHub Actions CI will automatically build & push distribution file after each push.
+Feel free to open a PR. GitHub Actions will automatically build & push the distribution file after each push.
 
 ## Releasing
 
