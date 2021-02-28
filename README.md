@@ -15,7 +15,7 @@ The action automatically updates the task list when referenced issue is closed (
 ## Inputs
 
 - **`github-token`**  
-  the GitHub token secret (use `${{secrets.GITHUB_TOKEN}}` in action YAML)  
+  the GitHub token secret (use `${{ secrets.GITHUB_TOKEN }}` in action YAML)  
   _required_
 - **`epic-label-name`**  
   name of the label you want to use for epic issues  
@@ -39,7 +39,7 @@ jobs:
       - name: Run epics action
         uses: cloudaper/epics-action@v1
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           epic-label-name: feature
           auto-close-epic: true
 ```
