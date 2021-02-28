@@ -43,17 +43,3 @@ jobs:
           epic-label-name: feature
           auto-close-epic: true
 ```
-
-## Development
-
-Install dependencies:
-
-```shell
-yarn
-```
-
-Lint & compile dependencies into `dist/index.js`:
-
-```shell
-yarn build
-```
