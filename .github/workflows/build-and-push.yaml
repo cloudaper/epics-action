@@ -1,0 +1,38 @@
+name: Build & push
+on:
+  pull_request:
+jobs:
+  build:
+    name: Build & push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+      - name: Get Yarn cache folder path
+        id: yarn-cache-folder
+        run: echo "::set-output name=path::$( yarn cache dir )"
+      - name: Set up Yarn cache
+        id: yarn-cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache-folder.outputs.path }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install Node packages via Yarn
+        run: yarn install --frozen-lockfile --cache-folder ${{ steps.yarn-cache-folder.outputs.path }}
+      - name: Build
+        run: yarn build
+      - name: Configure Git
+        run: |
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git config user.name $GITHUB_ACTOR
+      - name: Push the distribution file
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git stage ./dist
+          git commit -m "Update distribution file"
+          git push --force "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY" "HEAD:$GITHUB_HEAD_REF"
