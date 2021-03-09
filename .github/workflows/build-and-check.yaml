@@ -1,0 +1,58 @@
+name: Build & check
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - assigned
+      - closed
+      - edited
+      - labeled
+      - locked
+      - ready_for_review
+      - review_request_removed
+      - review_requested
+      - unassigned
+      - unlabeled
+      - unlocked
+  workflow_dispatch:
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    outputs:
+      changes: ${{ steps.check-for-changes.outputs.diff }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+      - name: Get Yarn cache folder path
+        id: yarn-cache-folder
+        run: echo "::set-output name=path::$( yarn cache dir )"
+      - name: Set up Yarn cache
+        id: yarn-cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache-folder.outputs.path }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install Node packages via Yarn
+        run: yarn install --frozen-lockfile --cache-folder ${{ steps.yarn-cache-folder.outputs.path }}
+      - name: Build
+        run: yarn build
+      - name: Check for changes
+        id: check-for-changes
+        run: echo "::set-output name=diff::$( git diff )"
+  check:
+    name: Check distribution file
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - if: ${{ needs.build.outputs.changes != '' }}
+        name: Fail
+        run: exit 1
