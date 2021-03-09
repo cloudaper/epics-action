@@ -4,18 +4,20 @@ import * as github from '@actions/github';
 async function getReferencedEpics({ octokit }) {
   const epicLabelName = core.getInput('epic-label-name', { required: true });
 
-  const events = await octokit.issues.listEventsForTimeline({
-    owner: github.context.repo.owner,
-    repo: github.context.repo.repo,
-    issue_number: github.context.payload.issue.number,
-  });
+  if (github.context.payload.action !== 'deleted') {
+    const events = await octokit.issues.listEventsForTimeline({
+      owner: github.context.repo.owner,
+      repo: github.context.repo.repo,
+      issue_number: github.context.payload.issue.number,
+    });
 
-  const referencedEpics = events.data
-    .filter((item) => (item.event === 'cross-referenced' && item.source))
-    .filter((item) => item.source.issue.labels
-      .filter((label) => label.name.toLowerCase() === epicLabelName.toLowerCase()).length > 0);
+    return events.data
+      .filter((item) => (item.event === 'cross-referenced' && item.source))
+      .filter((item) => item.source.issue.labels
+        .filter((label) => label.name.toLowerCase() === epicLabelName.toLowerCase()).length > 0);
+  }
 
-  return referencedEpics;
+  return [];
 }
 
 async function updateEpic({ octokit, epic }) {
