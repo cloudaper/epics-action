@@ -579,18 +579,20 @@ __webpack_require__.r(__webpack_exports__);
 async function getReferencedEpics({ octokit }) {
   const epicLabelName = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('epic-label-name', { required: true });
 
-  const events = await octokit.issues.listEventsForTimeline({
-    owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
-    repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
-    issue_number: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.issue.number,
-  });
+  if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.action !== 'deleted') {
+    const events = await octokit.issues.listEventsForTimeline({
+      owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
+      repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
+      issue_number: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.issue.number,
+    });
 
-  const referencedEpics = events.data
-    .filter((item) => (item.event === 'cross-referenced' && item.source))
-    .filter((item) => item.source.issue.labels
-      .filter((label) => label.name.toLowerCase() === epicLabelName.toLowerCase()).length > 0);
+    return events.data
+      .filter((item) => (item.event === 'cross-referenced' && item.source))
+      .filter((item) => item.source.issue.labels
+        .filter((label) => label.name.toLowerCase() === epicLabelName.toLowerCase()).length > 0);
+  }
 
-  return referencedEpics;
+  return [];
 }
 
 async function updateEpic({ octokit, epic }) {
