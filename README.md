@@ -30,7 +30,7 @@ The action automatically updates the task list when referenced issue is closed (
 name: Update epics
 on:
   issues:
-    types: [opened, created, closed, reopened, deleted]
+    types: [opened, closed, reopened, deleted]
 jobs:
   epics:
     runs-on: ubuntu-latest
