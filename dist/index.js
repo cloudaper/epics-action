@@ -13451,7 +13451,7 @@ async function getReferencedEpics({ octokit }) {
   const epicLabelName = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('epic-label-name', { required: true });
 
   if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.action !== 'deleted') {
-    const events = await octokit.issues.listEventsForTimeline({
+    const events = await octokit.rest.issues.listEventsForTimeline({
       owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
       repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
       issue_number: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.issue.number,
@@ -13499,7 +13499,7 @@ async function updateEpic({ octokit, epic }) {
     epicState = 'closed';
   }
 
-  const result = await octokit.issues.update({
+  const result = await octokit.rest.issues.update({
     owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
     repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
     issue_number: epicNumber,
