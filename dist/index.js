@@ -13518,9 +13518,7 @@ async function run() {
   try {
     const token = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('github-token', { required: true });
 
-    const octokit = new _actions_github__WEBPACK_IMPORTED_MODULE_1__.GitHub(token, {
-      previews: ['mockingbird-preview'],
-    });
+    const octokit = new _actions_github__WEBPACK_IMPORTED_MODULE_1__.GitHub(token);
 
     const epics = await getReferencedEpics({ octokit });
     await updateEpics({ octokit, epics });
