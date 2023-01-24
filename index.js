@@ -38,8 +38,8 @@ async function updateEpic({ octokit, epic }) {
     epicBody = epicBody.replace(match[0], match[0].replace(/- \[[ |x]\]/, `- [${convertedIssueState}]`));
   });
 
-  const patternAll = new RegExp('- \\[[ |x]\\] .*#.*', 'gm');
-  const patternAllDone = new RegExp('- \\[[x]\\] .*#.*', 'gm');
+  const patternAll = /- \[[ |x]\] .*#.*/gm;
+  const patternAllDone = /- \[[x]\] .*#.*/gm;
   const matchesAll = Array.from(epicBody.matchAll(patternAll));
   const matchesAllCount = matchesAll.length;
   const matchesAllDone = Array.from(epicBody.matchAll(patternAllDone));
