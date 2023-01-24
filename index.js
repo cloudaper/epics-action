@@ -72,7 +72,7 @@ async function run() {
   try {
     const token = core.getInput('github-token', { required: true });
 
-    const octokit = new github.GitHub(token);
+    const octokit = github.getOctokit(token);
 
     const epics = await getReferencedEpics({ octokit });
     await updateEpics({ octokit, epics });
