@@ -5,7 +5,7 @@ async function getReferencedEpics({ octokit }) {
   const epicLabelName = core.getInput('epic-label-name', { required: true });
 
   if (github.context.payload.action !== 'deleted') {
-    const events = await octokit.issues.listEventsForTimeline({
+    const events = await octokit.rest.issues.listEventsForTimeline({
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
       issue_number: github.context.payload.issue.number,
@@ -53,7 +53,7 @@ async function updateEpic({ octokit, epic }) {
     epicState = 'closed';
   }
 
-  const result = await octokit.issues.update({
+  const result = await octokit.rest.issues.update({
     owner: github.context.repo.owner,
     repo: github.context.repo.repo,
     issue_number: epicNumber,
