@@ -1,5 +1,13 @@
 # Epic issues for GitHub
 
+> ### Notice: this action vs. GitHub task lists
+>
+> This action was created before GitHub introduced the [task lists](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/about-task-lists) feature, which esentially does the same thing: synces the status of a task list item with a reference to an issue based on the issues state.
+>
+> However, you can still use this action for the auto close epic feature.
+>
+> There is even more sopishicated [tasklists](https://docs.github.com/en/issues/managing-your-tasks-with-tasklists) (not the missing space) feature in works at private beta, so the future of this action is uncertain, but for now it should remain functional.
+
 This action allows you to create epic issues on GitHub. Simply label an issue as `epic` and reference another issues in the task list:
 
 ```markdown
