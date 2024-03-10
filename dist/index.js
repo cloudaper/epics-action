@@ -9858,17 +9858,16 @@ async function updateEpic({ octokit, epic }) {
     epicBody = epicBody.replace(match[0], match[0].replace(/- \[[ |x]\]/, `- [${convertedIssueState}]`));
   });
 
-  const patternAll = /- \[[ |x]\] .*#.*/gm;
-  const patternAllDone = /- \[[x]\] .*#.*/gm;
-  const matchesAll = Array.from(epicBody.matchAll(patternAll));
-  const matchesAllCount = matchesAll.length;
-  const matchesAllDone = Array.from(epicBody.matchAll(patternAllDone));
-  const matchesAllDoneCount = matchesAllDone.length;
+  const allTasksPattern = /- \[[ |x]\] .*/gm;
+  const doneTasksPattern = /- \[[x]\] .*/gm;
+  const allTasks = Array.from(epicBody.matchAll(allTasksPattern));
+  const doneTasks = Array.from(epicBody.matchAll(doneTasksPattern));
+  const allTasksCount = allTasks.length;
+  const doneTasksCount = doneTasks.length;
 
   if (!!autoCloseEpic
     && matchCount
-    && matchesAllCount
-    && matchesAllDoneCount === matchesAllCount
+    && allTasksCount === doneTasksCount
   ) {
     epicState = 'closed';
   }
