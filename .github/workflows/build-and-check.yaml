@@ -47,7 +47,12 @@ jobs:
         run: yarn build
       - name: Check for changes
         id: check-for-changes
-        run: echo "diff=$( git diff )" >> $GITHUB_OUTPUT
+        run: |
+          {
+            echo "diff<<EOF"
+            git diff
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
   check:
     name: Check distribution file
     runs-on: ubuntu-latest

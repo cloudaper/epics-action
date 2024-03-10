@@ -30,7 +30,12 @@ jobs:
         run: yarn build
       - name: Check for changes
         id: check-for-changes
-        run: echo "diff=$( git diff )" >> $GITHUB_OUTPUT
+        run: |
+          {
+            echo "diff<<EOF"
+            git diff
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
       - if: ${{ steps.check-for-changes.outputs.diff != '' }}
         name: Configure Git
         run: |
