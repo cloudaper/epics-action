@@ -1,6 +1,7 @@
 # Epic issues for GitHub
 
-> ### Notice: this action vs. GitHub task lists
+> [!NOTE]
+> #### This action vs. GitHub task lists
 >
 > This action was created before GitHub introduced the [task lists](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/about-task-lists) feature, which esentially does the same thing: synces the status of a task list item with a reference to an issue based on the issues state.
 >
